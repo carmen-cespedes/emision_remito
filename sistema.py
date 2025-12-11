@@ -109,15 +109,37 @@ def generar_remito(numero, nombre_archivo, items, total):
     story = []
 
     # Encabezado
-    titulo = f"<para align='center'><font size=20 color='{rojo.hexval()}'><b>Ferretería San Miguel</b></font></para>"
-    subtitulo = f"<para align='center'><font size=12 color='{rojo.hexval()}'><b>Remito N° {numero}</b></font></para>"
-    fecha = f"<font size=10><b>Fecha:</b> {datetime.now().strftime('%d/%m/%Y')}</font>"
+    from reportlab.lib.styles import ParagraphStyle
 
-    story.append(Paragraph(titulo, styles["Normal"]))
-    story.append(Paragraph(subtitulo, styles["Normal"]))
-    story.append(Spacer(1, 10))
-    story.append(Paragraph(fecha, styles["Normal"]))
+    # Estilos personalizados
+    estilo_titulo = ParagraphStyle(
+        name="Titulo",
+        alignment=1,  # 1 = centrado
+        fontSize=22,
+        textColor=rojo,
+        leading=26,
+        spaceAfter=6
+    )
+    
+    estilo_subtitulo = ParagraphStyle(
+        name="Subtitulo",
+        alignment=1,
+        fontSize=14,
+        textColor=rojo,
+        leading=18,
+        spaceAfter=14
+    )
+
+# Encabezado corregido
+    titulo = Paragraph("<b>Ferretería San Miguel</b>", estilo_titulo)
+    subtitulo = Paragraph(f"<b>Remito N° {numero}</b>", estilo_subtitulo)
+    fecha = Paragraph(f"<b>Fecha:</b> {datetime.now().strftime('%d/%m/%Y')}", styles["Normal"])
+
+    story.append(titulo)
+    story.append(subtitulo)
+    story.append(fecha)
     story.append(Spacer(1, 15))
+
 
     # Tabla
     encabezado = ["Cantidad", "Producto", "Precio Unitario", "Subtotal"]
